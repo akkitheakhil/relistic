@@ -1,6 +1,6 @@
 import LottieSplash from "@/components/SplashScreen/SplashScreen";
 import { AppTheme, darkTheme, lightTheme } from "@/theme/colors";
-import { SplashScreen } from "expo-router";
+import {SplashScreen, Stack} from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { StatusBar, useColorScheme, View } from "react-native";
 import { ThemeProvider } from "styled-components/native";
@@ -31,6 +31,9 @@ export default function RootLayout() {
                 </View>
             ) : (
                 <View style={{ flex: 1, backgroundColor: theme.background }}>
+                    <Stack screenOptions={{ headerShown: false,  }}>
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    </Stack>
                 </View>
             )}
         </ThemeProvider>
