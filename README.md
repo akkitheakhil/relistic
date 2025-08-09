@@ -33,11 +33,13 @@ Whether you’re planning groceries, tracking tasks, or organizing group events 
 ## 🚀 Getting Started
 
 ### 1️⃣ Prerequisites
+
 - [Node.js](https://nodejs.org/) (LTS recommended)
 - [Yarn](https://yarnpkg.com/) or npm
 - [Expo CLI](https://docs.expo.dev/get-started/installation/)
 
 ### 2️⃣ Installation
+
 ```bash
 # Clone the repo
 git clone https://github.com/akkitheakhil/relistic.git
@@ -55,6 +57,7 @@ yarn start
 # or
 npm start
 ```
+
 ## 📂 Project Structure
 
 ```plaintext
@@ -90,4 +93,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-> 💡 **Relistic** — *Make lists that live and grow with your team.*
+> 💡 **Relistic** — _Make lists that live and grow with your team._

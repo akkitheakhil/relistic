@@ -1,0 +1,13 @@
+node_modules
+ios
+android
+.expo
+.expo-shared
+dist
+build
+coverage
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.svg

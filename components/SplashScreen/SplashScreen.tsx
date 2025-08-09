@@ -1,21 +1,23 @@
-// src/components/LottieSplash.tsx
-import LottieView from "lottie-react-native";
-import React, { useEffect, useRef } from "react";
-import { useColorScheme } from "react-native";
+import React, { useCallback, useEffect, useRef } from 'react';
+
+import { useColorScheme } from 'react-native';
+
+import LottieView from 'lottie-react-native';
 import Animated, {
-    Easing,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from "react-native-reanimated";
-import styled, { useTheme } from "styled-components/native";
-import splashAnimationDark from "../../assets/animations/splash-screen-animation-dark.json";
-import splashAnimationLight from "../../assets/animations/splash-screen-animation.json";
+  Easing,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import styledComponents, { useTheme } from 'styled-components/native';
+
+import splashAnimationDark from '../../assets/animations/splash-screen-animation-dark.json';
+import splashAnimationLight from '../../assets/animations/splash-screen-animation.json';
 
 type Props = { onFinish?: () => void };
 
-const Container = styled(Animated.View)`
+const Container = styledComponents(Animated.View)`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -23,46 +25,45 @@ const Container = styled(Animated.View)`
 `;
 
 const LottieSplash: React.FC<Props> = ({ onFinish }) => {
-    const colorScheme = useColorScheme();
-    const theme = useTheme();
-    const opacity = useSharedValue(1);
-    const scale = useSharedValue(1);
-    const lottieRef = useRef<LottieView | null>(null);
+  const colorScheme = useColorScheme();
+  const theme = useTheme();
+  const opacity = useSharedValue(1);
+  const scale = useSharedValue(1);
+  const lottieRef = useRef<LottieView | null>(null);
 
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ scale: scale.value }],
+  }));
 
-    const animatedStyle = useAnimatedStyle(() => ({
-        opacity: opacity.value,
-        transform: [{ scale: scale.value }],
-    }));
+  const animation = colorScheme === 'dark' ? splashAnimationDark : splashAnimationLight;
 
-    const animation =
-        colorScheme === "dark" ? splashAnimationDark : splashAnimationLight;
+  const fadeOut = useCallback(() => {
+    opacity.value = withTiming(0, { duration: 320, easing: Easing.out(Easing.cubic) }, () => {
+      runOnJS(onFinish || (() => {}))();
+    });
+    scale.value = withTiming(1.03, { duration: 320, easing: Easing.out(Easing.cubic) });
+  }, [onFinish, opacity, scale]);
 
-    useEffect(() => {
-        // Safety timeout in case onAnimationFinish doesn't fire
-        const t = setTimeout(() => fadeOut(), 5000);
-        return () => clearTimeout(t);
-    }, []);
+  useEffect(() => {
+    const t = setTimeout(fadeOut, 5000);
+    return () => clearTimeout(t);
+  }, [fadeOut]);
 
-    const fadeOut = () => {
-        opacity.value = withTiming(0, { duration: 320, easing: Easing.out(Easing.cubic) }, () => {
-            runOnJS(onFinish || (() => {}))();
-        });
-        scale.value = withTiming(1.03, { duration: 320, easing: Easing.out(Easing.cubic) });
-    };
-
-    return (
-        <Container style={animatedStyle}>
-            <LottieView
-                ref={(r) => { lottieRef.current = r; }}
-                source={animation}
-                autoPlay
-                loop={false}
-                onAnimationFinish={fadeOut}
-                style={{ width: "80%", aspectRatio: 1, backgroundColor: theme.background }}
-            />
-        </Container>
-    );
+  return (
+    <Container style={animatedStyle}>
+      <LottieView
+        ref={(r) => {
+          lottieRef.current = r;
+        }}
+        source={animation}
+        autoPlay
+        loop={false}
+        onAnimationFinish={fadeOut}
+        style={{ width: '80%', aspectRatio: 1, backgroundColor: theme.background }}
+      />
+    </Container>
+  );
 };
 
 export default LottieSplash;
