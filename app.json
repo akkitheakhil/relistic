@@ -41,7 +41,8 @@
             "image": "./assets/images/blank-splash-screen.png"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

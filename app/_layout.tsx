@@ -1,9 +1,16 @@
 import LottieSplash from "@/components/SplashScreen/SplashScreen";
 import { AppTheme, darkTheme, lightTheme } from "@/theme/colors";
-import {SplashScreen, Stack} from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { StatusBar, useColorScheme, View } from "react-native";
 import { ThemeProvider } from "styled-components/native";
+import {
+    useFonts,
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold
+} from "@expo-google-fonts/roboto";
+
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -13,14 +20,20 @@ export default function RootLayout() {
         [colorScheme]
     );
 
+    const [fontsLoaded, fontError] = useFonts({
+        Roboto_400Regular,
+        Roboto_500Medium,
+        Roboto_700Bold
+    });
+
     const [lottieDone, setLottieDone] = useState(false);
-    const resourcesLoaded = true;
+    const appReady = (fontsLoaded || !!fontError) && lottieDone;
 
     useEffect(() => {
-        SplashScreen.hideAsync().catch(() => {});
-    }, []);
-
-    const appReady = lottieDone && resourcesLoaded;
+        if (appReady) {
+            SplashScreen.hideAsync().catch(() => {});
+        }
+    }, [appReady]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -31,7 +44,7 @@ export default function RootLayout() {
                 </View>
             ) : (
                 <View style={{ flex: 1, backgroundColor: theme.background }}>
-                    <Stack screenOptions={{ headerShown: false,  }}>
+                    <Stack screenOptions={{ headerShown: false }}>
                         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     </Stack>
                 </View>
