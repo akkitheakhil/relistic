@@ -29,7 +29,19 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "resizeMode": "contain",
+          "backgroundColor": "#F8F9FA",
+          "image": "./assets/images/blank-splash-screen.png",
+          "dark": {
+            "backgroundColor": "#1C1C1E",
+            "image": "./assets/images/blank-splash-screen.png"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
