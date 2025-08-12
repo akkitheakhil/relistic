@@ -5,6 +5,8 @@ import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
+import { useAppStore } from '@/store/app-store';
+
 import { Indicator, TabBarContainer, TabBarItem, Wrapper } from './CustomTabBar.styles';
 
 const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
@@ -19,7 +21,7 @@ const PILL_WIDTH_RATIO = 0.8;
 
 export const CustomTabBar = ({ state, navigation }: BottomTabBarProps) => {
   const theme = useTheme();
-
+  const { setHasSeenOnboarding } = useAppStore();
   const [barW, setBarW] = useState(0);
   const innerW = Math.max(0, barW - PADDING * 2);
   const itemW = innerW / state.routes.length;
@@ -42,6 +44,7 @@ export const CustomTabBar = ({ state, navigation }: BottomTabBarProps) => {
               key={route.key}
               activeOpacity={0.85}
               onPress={() => {
+                setHasSeenOnboarding(false);
                 const evt = navigation.emit({
                   type: 'tabPress',
                   target: route.key,
